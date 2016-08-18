@@ -344,8 +344,8 @@ module.exports = function (grunt) {
             'fonts/{,*/}*.*',
             'sitemap.xml',
             'data/{,*/}*',
-            'challenges/{,*/}*',
-            'profile/{,*/}*'
+            'challenges/**',
+            'profile/**'
           ]
         }, {
           expand: true,
