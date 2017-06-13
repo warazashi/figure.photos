@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" type="text/css"/>
+    <style type="text/css">
+      html,body {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .event {
+        display: flex;
+      }
+      #ripple
+      {
+        flex: 1
+      }
+      #showcase
+      {
+        flex: 1
+      }
+    </style>
+</head>
+<body>
+
+<div class="event">
+  <div id="ripple"></div>
+  <div id="showcase">Showcase</div>
+</div>
+<script type="text/javascript">
+  var entries = [{
+    id: 1,
+    participated: true,
+    name: '+wara zashi',
+    photo: 'https://lh3.googleusercontent.com/-KKdYOTnUl0U/WQC4dOV54kI/AAAAAAAAlcI/79EoDADIwbEM45-uz3Gbu0HJ0TMNtH-GACJoC/w530-h352-p-rw/DSC_4184.JPG',
+    url: 'https://plus.google.com/+warazashi/posts/A34Gtdw8mqn',
+    next: [2,3]
+  },{
+    id: 2,
+    participated: true,
+    name: '+Francis Huang',
+    photo: 'https://lh3.googleusercontent.com/-jEmtKA5YBTk/WQRb4NrZ7XI/AAAAAAAAUVg/ah-_XUvM4JwUh6k7DNI08fxSBHuEgSuBACJoC/w530-h707-p-rw/April%2BRipples%2B-%2BOboro-2.jpg',
+    url: 'https://plus.google.com/+FrancisHuang/posts/MFiYm3vJ473',
+    next: [4,5]
+  },{
+    id: 3,
+    participated: true,
+    name: '+jeremiah jahn',
+    photo: 'https://lh3.googleusercontent.com/-rbeEh1VJriA/WQC88DsxYjI/AAAAAAAAdjE/QLUeN_CVKn8Azg0wbLnfkBvjb3MbSx-yACJoC/w530-h308-p-rw/IMG_9147.jpg',
+    url: 'https://plus.google.com/+jeremiahjahn/posts/LySs9R5CJZn',
+    next: [6,7]
+  },{
+    id: 4,
+    name: '+Kristo Perwira'
+  },{
+    id: 5,
+    name: '+TIEDefender2nd'
+  },{
+    id: 6,
+    participated: true,
+    name: '+Vincent H',
+    photo: 'https://lh3.googleusercontent.com/--f5EJ-VUbvQ/WQF1HRWvkYI/AAAAAAAAWFQ/iUHaa5OjwU8JkQAKbT-ib-e1uokFrplXQCJoC/w530-h798-p-rw/DSC_7065-2.jpg',
+    url: 'https://plus.google.com/+VincentH/posts/VEwzzmzRkKz',
+    next: [12,13]
+  },{
+    id: 7,
+    participated: true,
+    name: '+Albert Nakano',
+    photo: 'https://lh3.googleusercontent.com/-VDzNvRSMcYQ/WQE1-2hnfsI/AAAAAAABUT0/HM19Sz0C38Ahvg1683moxooSA6PUEddvACJoC/w530-h707-p-rw/IMG_20170419_170348.jpg',
+    url: 'https://plus.google.com/+AlbertNakano/posts/gU8yH4nBcQL',
+    next: [14,15]
+  },{
+    id: 12,
+    name: '+Sheng Gonzales'
+  },{
+    id: 13,
+    name: '+Grishnàkh Garuda'
+  },{
+    id: 14,
+    participated: true,
+    name: '+Don Yang',
+    photo: 'https://lh3.googleusercontent.com/-5_miHhF9FmA/WQFFcYP9rcI/AAAAAAABblI/JhUXh4B5aZE-sPAMjztM9ErAdl9nLNlpwCJoC/w530-h398-p-rw/IMG_20170426_172536.jpg',
+    url: 'https://plus.google.com/+DonYang/posts/P2aU7CXR6kY',
+    next: [28,29]
+  },{
+    id: 15,
+    name: '+Daisuke W'
+  },{
+    id: 28,
+    name: '+masaru kumao'
+  },{
+    id: 29,
+    participated: true,
+    name: '+Sellie Rebgen',
+    photo: 'https://lh3.googleusercontent.com/-FuaDiF9OYGI/WQKteEn-96I/AAAAAAAAAqE/sp4DEbSylH01EQ2AyPm0aKLJHAkDP3LMgCJoC/w530-h353-p-rw/flight.jpg',
+    url: 'https://plus.google.com/112679213625056677371/posts/J6eTB7wL19U',
+    next: [58,59]
+  },{
+    id: 58,
+    name: '+Brian Chong'
+  },{
+    id: 59,
+    name: '+Jose M MJ'
+  }];
+
+
+    // create an array with nodes
+    var nodes = new vis.DataSet();
+    var edges = new vis.DataSet();
+
+    for(var i=0; i<entries.length; i++){
+      var entry = entries[i];
+      var node = {}
+      node.entryLocator = i;
+      node.id = entry.id;
+      node.label = entry.name;
+      if(entry.photo) node.image = entry.photo;
+
+      nodes.add(node);
+
+      if(entry.participated && entry.next && entry.next.length > 0){
+        for(var j=0; j<entry.next.length; j++){
+          var target = entry.next[j];
+          edges.add({
+            from: entry.id,
+            to: target
+          });
+        }
+      }
+    }
+
+    // create a network
+    var container = document.getElementById('ripple');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    var options = {
+      nodes: {
+        shape: 'circularImage',
+        image: 'https://lh3.googleusercontent.com/-CX6qNiR3a6Q/WNJ9mRusuXI/AAAAAAAAk2Y/UTfexfm88tEbMhEWOeGopK5TXBO0nmNrQCJoC/w530-h265-p-rw/figurefriday.png'
+      },
+      layout: {
+        hierarchical: {
+          enabled: true,
+          sortMethod: 'directed'
+        }
+      }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+    network.on('click', function(properties) {
+      showEntry(entries[nodes.get(properties.nodes[0]).entryLocator]);
+    });
+
+    function showEntry(entry)
+    {
+      var div, dest;
+      dest = document.getElementById("showcase");
+      div = document.createElement("div");
+
+      div.className = "embeddedpost";
+      div.innerHTML =
+      '<img src="' + entry.photo + '" />' +
+      '<a href="' + entry.url + '">To Post</a>';
+
+      dest.innerHTML = "";
+      dest.appendChild(div);
+    };
+
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" type="text/css"/>
+    <style type="text/css">
+      html,body {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      .event {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+      }
+
+      #ripple
+      {
+        flex: 1;
+      }
+
+      #showcase
+      {
+        flex: 1;
+      }
+
+      .embeddedpost
+      {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .embeddedpost .photo
+      {
+        width: 100%;
+      }
+    </style>
+</head>
+<body>
+
+<div class="event">
+  <div id="ripple"></div>
+  <div id="showcase">Showcase</div>
+</div>
+<script type="text/javascript">
+  var entries = [{
+    id: 1,
+    participated: true,
+    name: '+wara zashi',
+    url: 'https://plus.google.com/+warazashi/posts/jDXb7K284GX',
+    icon: 'https://lh3.googleusercontent.com/-MyXj-9MNEog/WSWdyVHryKI/AAAAAAAAlzU/Hh9LVpWi2asDfjh2x57Ip_xvdkbQH3iJgCJoC/w100/DSC_0626.JPG',
+    photo: 'https://lh3.googleusercontent.com/-MyXj-9MNEog/WSWdyVHryKI/AAAAAAAAlzU/Hh9LVpWi2asDfjh2x57Ip_xvdkbQH3iJgCJoC/s0/DSC_0626.JPG',
+    next: [2,3]
+  },{
+    id: 2,
+    participated: true,
+    name: '+Olivia Wynkoop',
+    url: 'https://plus.google.com/+OliviaWynkoop/posts/Sjt3sP1hvdx',
+    icon: 'https://lh3.googleusercontent.com/-LclirWdPUbA/WSW8X2WiOGI/AAAAAAAAY1o/dBrRh8t3bHMWa0rPakp01zOlsF07jheWgCJoC/w100/16%2B-%2B1',
+    photo: 'https://lh3.googleusercontent.com/-LclirWdPUbA/WSW8X2WiOGI/AAAAAAAAY1o/dBrRh8t3bHMWa0rPakp01zOlsF07jheWgCJoC/s0/16%2B-%2B1',
+    next: [8,9]
+  },{
+    id: 3,
+    participated: true,
+    name: '+Duy Truong',
+    url: 'https://plus.google.com/+DuyTruongX/posts/D4ZwuR396aP',
+    icon: 'https://lh3.googleusercontent.com/-DVu9r16LAAI/WSqC8jWjfDI/AAAAAAAARg8/dS7Jjx-MX3MULcv8Qr19hPXwZ8mINeSdQCJoC/w100/IMG_3884.jpg',
+    photo: 'https://lh3.googleusercontent.com/-DVu9r16LAAI/WSqC8jWjfDI/AAAAAAAARg8/dS7Jjx-MX3MULcv8Qr19hPXwZ8mINeSdQCJoC/s0/IMG_3884.jpg',
+    next: [4,5]
+  },{
+    id: 4,
+    name: '+Lâm Bảo'
+  },{
+    id: 5,
+    participated: true,
+    name: '+Jose M MJ',
+    url: 'https://plus.google.com/+JoseMaMart%C3%ADnJim%C3%A9nez/posts/1GoyrqyxW7v',
+    icon: 'https://lh3.googleusercontent.com/-OsApgUvaUVY/WS3Jsz8X35I/AAAAAAAAgiU/WpGTPrGCSRc-flq6ntqFNfSkvLW-PnGdwCJoC/w100/IMG_0323.jpg',
+    photo: 'https://lh3.googleusercontent.com/-OsApgUvaUVY/WS3Jsz8X35I/AAAAAAAAgiU/WpGTPrGCSRc-flq6ntqFNfSkvLW-PnGdwCJoC/s0/IMG_0323.jpg',
+    next: [6,7]
+  },{
+    id: 6,
+    name: '+Eugenio Torres'
+  },{
+    id: 7,
+    name: '+Leopaul del Rosario'
+  },{
+    id: 8,
+    participated: true,
+    name: '+jermiah jahn',
+    url: 'https://plus.google.com/+jeremiahjahn/posts/AnVZNjj4KVJ',
+    icon: 'https://lh3.googleusercontent.com/-h-ZmnmX07S0/WSniS-UCpEI/AAAAAAAAfFM/rkcUUDjHF0AE4i0LeDizyB7R2CSrnvAVACJoC/w100/IMG_9431-Edit-Edit.jpg',
+    photo: 'https://lh3.googleusercontent.com/-h-ZmnmX07S0/WSniS-UCpEI/AAAAAAAAfFM/rkcUUDjHF0AE4i0LeDizyB7R2CSrnvAVACJoC/s0/IMG_9431-Edit-Edit.jpg',
+    next: [12,13]
+  },{
+    id: 9,
+    participated: true,
+    name: '+Daniel Pettersson',
+    url: 'https://plus.google.com/+DanielPettersson/posts/JbcuhgAB4i3',
+    icon: 'https://lh3.googleusercontent.com/-Rod4l2iEYtM/WSdDmHuw33I/AAAAAAABXyU/ncqOOApS7LQmoUn3Majf7LXIbemVKljQQCJoC/w100/P1450697.jpg',
+    photo: 'https://lh3.googleusercontent.com/-Rod4l2iEYtM/WSdDmHuw33I/AAAAAAABXyU/ncqOOApS7LQmoUn3Majf7LXIbemVKljQQCJoC/s0/P1450697.jpg',
+    next: [10,11]
+  },{
+    id: 10,
+    name: '+Gerald K'
+  },{
+    id: 11,
+    participated: true,
+    name: '+Michael Huttner',
+    url: 'https://plus.google.com/+MichaelHuttner/posts/VWE8dhzyiqm',
+    icon: 'https://lh3.googleusercontent.com/MJehTQsI-QXo_x4XE7EZMiJha2y7JX0klYF8XRYU8onFGXzUTNkQFr_A3GoQTfn-aozKPvMhtKAxE-tEt87nmDZ436QkcB1MKZ444xcQ2QiuI1UN3GszocrRnbkwNwFNgcDxw8c=w100',
+    photo: 'https://lh3.googleusercontent.com/MJehTQsI-QXo_x4XE7EZMiJha2y7JX0klYF8XRYU8onFGXzUTNkQFr_A3GoQTfn-aozKPvMhtKAxE-tEt87nmDZ436QkcB1MKZ444xcQ2QiuI1UN3GszocrRnbkwNwFNgcDxw8c=s0',
+    next: [16,17]
+  },{
+    id: 12,
+    participated: true,
+    name: '+Kristo Perwira',
+    url: 'https://plus.google.com/u/0/107530971225679829706/posts/Ls6C7Rv1U7a',
+    icon: 'https://lh3.googleusercontent.com/-D6awJ1vTzh0/WTY81wFZfRI/AAAAAAAACy8/NQvUisl8UFMGXoImgZ2hmwaj7hWXgJw-ACJoC/w100/IS6C0123.jpg',
+    photo: 'https://lh3.googleusercontent.com/-D6awJ1vTzh0/WTY81wFZfRI/AAAAAAAACy8/NQvUisl8UFMGXoImgZ2hmwaj7hWXgJw-ACJoC/s0/IS6C0123.jpg',
+    next: [14,15]
+  },{
+    id: 13,
+    name: '+建安風骨'
+  },{
+    id: 14,
+    name: '+Nathen G'
+  },{
+    id: 15,
+    name: '+Nathaniel Goodman'
+  },{
+    id: 16,
+    participated: true,
+    name: '+Albert Nakano',
+    url: 'https://plus.google.com/u/0/+AlbertNakano/posts/R9xc1u63XWJ',
+    icon: 'https://lh3.googleusercontent.com/-bRzyKl92hS0/WSkxyGbFCTI/AAAAAAABWPA/rX_XG2YZqdsy_LNdmFEla57o8uMUpbdtwCJoC/w100/DSC_8415.JPG',
+    photo: 'https://lh3.googleusercontent.com/-bRzyKl92hS0/WSkxyGbFCTI/AAAAAAABWPA/rX_XG2YZqdsy_LNdmFEla57o8uMUpbdtwCJoC/s0/DSC_8415.JPG',
+    next: [18,19]
+  },{
+    id: 17,
+    participated: true,
+    name: '+Don Yang',
+    photo: '',
+    url: '',
+    next: [20,21]
+  },{
+    id: 18,
+    name: '+Shimakaze Zekamashi 3.0',
+  },{
+    id: 19,
+    name: '+平幸',
+  },{
+    id: 20,
+    participated: true,
+    name: '+Vincent H',
+    url: 'https://plus.google.com/+VincentH/posts/jJuidHTqTdX',
+    icon: 'https://lh3.googleusercontent.com/-56gOeHBMK9I/WSnnKf8VbJI/AAAAAAAAZS0/7YVc9oSvQt8ybwwkipjQ-6MipcW1NZvQgCJoC/w100/DSC_9130-1.jpg',
+    photo: 'https://lh3.googleusercontent.com/-56gOeHBMK9I/WSnnKf8VbJI/AAAAAAAAZS0/7YVc9oSvQt8ybwwkipjQ-6MipcW1NZvQgCJoC/s0/DSC_9130-1.jpg',
+    next: [22,23]
+  },{
+    id: 21,
+    participated: true,
+    name: '+Jose M MJ',
+    url: 'https://plus.google.com/+JoseMaMart%C3%ADnJim%C3%A9nez/posts/RLFB997QudX',
+    icon: 'https://lh3.googleusercontent.com/-KjA-HY1dfKk/WSodCyzLklI/AAAAAAAAgfE/fq8skljWyOkfX3dyHRfVUzELxpcU5JDRACJoC/w100/DSC08319-HDR.jpg',
+    photo: 'https://lh3.googleusercontent.com/-KjA-HY1dfKk/WSodCyzLklI/AAAAAAAAgfE/fq8skljWyOkfX3dyHRfVUzELxpcU5JDRACJoC/s0/DSC08319-HDR.jpg',
+    next: [24,25]
+  },{
+    id: 22,
+    participated: true,
+    name: '+Francis Huang',
+    url: 'https://plus.google.com/+FrancisHuang/posts/6Khmtmh1qwa',
+    icon: 'https://lh3.googleusercontent.com/-fxd1Ell-iVc/WS-8imBzCqI/AAAAAAAAUjE/FJ6Foiw4_VgERZmd1LBx705XZQZ70jgkQCJoC/w100/May%2BRipple%2B-%2BHeero%2BYui.jpg',
+    photo: 'https://lh3.googleusercontent.com/-fxd1Ell-iVc/WS-8imBzCqI/AAAAAAAAUjE/FJ6Foiw4_VgERZmd1LBx705XZQZ70jgkQCJoC/s0/May%2BRipple%2B-%2BHeero%2BYui.jpg',
+  },{
+    id: 23,
+    name: '+Vato Nineonefive​'
+  },{
+    id: 24,
+    name: '+Andrey Popov'
+  },{
+    id: 25,
+    participated: true,
+    name: '+Miguel Díaz Castelo',
+    url: 'https://plus.google.com/103466226414830727896/posts/3jwfyhy4gTd',
+    icon: 'https://lh3.googleusercontent.com/-02HuZfdfmhY/WSsHdBklDcI/AAAAAAAACLM/hMa1pDxUC9EqkhAGMWmj45Shyw46XQmfgCJoC/w100/RC1.jpg',
+    photo: 'https://lh3.googleusercontent.com/-02HuZfdfmhY/WSsHdBklDcI/AAAAAAAACLM/hMa1pDxUC9EqkhAGMWmj45Shyw46XQmfgCJoC/s0/RC1.jpg',
+    next: [26,27]
+  },{
+    id: 26,
+    name: '+Leopaul del Rosario'
+  },{
+    id: 27,
+    name: '+Stevenson Kay'
+/*
+  },{
+    id: ,
+    participated: true,
+    name: '',
+    url: '',
+    icon: '',
+    photo: '',
+    next: [,]
+  },{
+    id: ,
+    name: '',
+*/
+  }];
+
+
+    // create an array with nodes
+    var nodes = new vis.DataSet();
+    var edges = new vis.DataSet();
+
+    for(var i=0; i<entries.length; i++){
+      var entry = entries[i];
+      var node = {}
+      node.entryLocator = i;
+      node.id = entry.id;
+      node.label = entry.name;
+      if(entry.icon) node.image = entry.icon;
+//      else if(entry.photo) node.image = entry.photo;
+
+      nodes.add(node);
+
+      if(entry.participated && entry.next && entry.next.length > 0){
+        for(var j=0; j<entry.next.length; j++){
+          var target = entry.next[j];
+          edges.add({
+            from: entry.id,
+            to: target
+          });
+        }
+      }
+    }
+
+    // create a network
+    var container = document.getElementById('ripple');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    var options = {
+      nodes: {
+        shape: 'circularImage',
+        image: 'https://lh3.googleusercontent.com/-CX6qNiR3a6Q/WNJ9mRusuXI/AAAAAAAAk2Y/UTfexfm88tEbMhEWOeGopK5TXBO0nmNrQCJoC/w530-h265-p-rw/figurefriday.png'
+      },
+      layout: {
+        hierarchical: {
+          enabled: true,
+          sortMethod: 'directed'
+        }
+      }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+    network.on('click', function(properties) {
+      showEntry(entries[nodes.get(properties.nodes[0]).entryLocator]);
+    });
+
+    function showEntry(entry)
+    {
+      var div, dest;
+      dest = document.getElementById("showcase");
+      div = document.createElement("div");
+
+      div.className = "embeddedpost";
+      if(entry.participated){
+        div.innerHTML =
+        '<img class="photo" src="' + entry.photo + '" />' +
+        '<a href="' + entry.url + '">To Post</a>';
+      } else {
+        div.innerHTML =
+        entry.name + ' was tagged but did not participate!';
+      }
+
+      dest.innerHTML = "";
+      dest.appendChild(div);
+    };
+
+</script>
+</body>
+</html>
