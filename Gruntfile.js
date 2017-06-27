@@ -345,6 +345,7 @@ module.exports = function (grunt) {
             'sitemap.xml',
             'data/{,*/}*',
             'challenges/**',
+            'event/**',
             'profile/**'
           ]
         }, {
