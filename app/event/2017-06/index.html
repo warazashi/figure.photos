@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" type="text/css"/>
+    <style type="text/css">
+      html,body {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      .event {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+      }
+
+      #ripple
+      {
+        flex: 1;
+      }
+
+      #showcase
+      {
+        flex: 1;
+      }
+
+      .embeddedpost
+      {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+
+      .embeddedpost .photo
+      {
+        width: 100%;
+        border-radius: 3px;
+      }
+    </style>
+</head>
+<body>
+
+<div class="event">
+  <div id="ripple"></div>
+  <div id="showcase">
+    <h2>June Ripple Showcase</h2>
+    Click on a circle to see more information.
+  </div>
+</div>
+<script type="text/javascript">
+  var entries = [{
+    id: 1,
+    participated: true,
+    name: '+wara zashi',
+    url: 'https://plus.google.com/+warazashi/posts/PVBResN1z46',
+    icon: 'https://lh3.googleusercontent.com/-0v25GyzhARw/WVO-kT_vl9I/AAAAAAAAmMc/tpP0O5RyZsYKPeXehugbrOBylc0DqtrMgCJoC/w100/DSC_1108.JPG',
+    photo: 'https://lh3.googleusercontent.com/-0v25GyzhARw/WVO-kT_vl9I/AAAAAAAAmMc/tpP0O5RyZsYKPeXehugbrOBylc0DqtrMgCJoC/s0/DSC_1108.JPG',
+    next: [2,3]
+  },{
+    id: 2,
+    participated: true,
+    name: '+Don Yang',
+    url: 'https://plus.google.com/+DonYang/posts/MSmRysSGkix',
+    icon: 'https://lh3.googleusercontent.com/-x2RZwz6JaBo/WVScpZ1XBvI/AAAAAAABgbA/-TzaU-WOT1EKFJNlSu9hDpTtkcCqoqFswCJoC/w100/back.jpg',
+    photo: 'https://lh3.googleusercontent.com/-x2RZwz6JaBo/WVScpZ1XBvI/AAAAAAABgbA/-TzaU-WOT1EKFJNlSu9hDpTtkcCqoqFswCJoC/s0/back.jpg',
+    next: [4,5]
+  },{
+    id: 3,
+    participated: false,
+    name: '+Tianxiao Ma',
+    url: '',
+    icon: '',
+    photo: '',
+    next: []
+  },{
+    id: 4,
+    participated: false,
+    name: '+Albert Nakano',
+    url: '',
+    icon: '',
+    photo: '',
+    next: []
+  },{
+    id: 5,
+    participated: false,
+    name: '+Vincent H',
+    url: '',
+    icon: '',
+    photo: '',
+    next: []
+/*
+  },{
+    id: ,
+    participated: true,
+    name: '',
+    url: '',
+    icon: '',
+    photo: '',
+    next: [,]
+  },{
+    id: ,
+    name: '',
+*/
+  }];
+
+
+    // create an array with nodes
+    var nodes = new vis.DataSet();
+    var edges = new vis.DataSet();
+
+    for(var i=0; i<entries.length; i++){
+      var entry = entries[i];
+      var node = {}
+      node.entryLocator = i;
+      node.id = entry.id;
+      node.label = entry.name;
+      if(entry.icon) node.image = entry.icon;
+//      else if(entry.photo) node.image = entry.photo;
+
+      nodes.add(node);
+
+      if(entry.participated && entry.next && entry.next.length > 0){
+        for(var j=0; j<entry.next.length; j++){
+          var target = entry.next[j];
+          edges.add({
+            from: entry.id,
+            to: target
+          });
+        }
+      }
+    }
+
+    // create a network
+    var container = document.getElementById('ripple');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    var options = {
+      nodes: {
+        shape: 'circularImage',
+        image: 'https://lh3.googleusercontent.com/-CX6qNiR3a6Q/WNJ9mRusuXI/AAAAAAAAk2Y/UTfexfm88tEbMhEWOeGopK5TXBO0nmNrQCJoC/w530-h265-p-rw/figurefriday.png'
+      },
+      layout: {
+        hierarchical: {
+          enabled: true,
+          sortMethod: 'directed'
+        }
+      }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+    network.on('click', function(properties) {
+      showEntry(entries[nodes.get(properties.nodes[0]).entryLocator]);
+    });
+
+    function showEntry(entry)
+    {
+      var div, dest;
+      dest = document.getElementById("showcase");
+      div = document.createElement("div");
+
+      div.className = "embeddedpost";
+      if(entry.participated){
+        div.innerHTML =
+        '<h2>Ripple by ' + entry.name + ': <a href="' + entry.url + '">See Post</a></h2>' +
+        '<img class="photo" src="' + entry.photo + '" />';
+      } else {
+        div.innerHTML =
+        entry.name + ' was tagged but did not participate!';
+      }
+
+      dest.innerHTML = "";
+      dest.appendChild(div);
+    };
+
+</script>
+</body>
+</html>
