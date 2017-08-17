@@ -56,6 +56,10 @@
   </div>
 </div>
 <script type="text/javascript">
+  var rippleEvent = {
+    open: true
+  }
+
   var entries = [{
     id: 0,
     participant: {
@@ -584,8 +588,7 @@
         if(entry.participant.url != null){
           name = '<a href="' + entry.participant.url + '">' + entry.participant.name + '</a>'
         }
-        div.innerHTML =
-        name + ' was tagged but did not participate!';
+        div.innerHTML = '<h2>' + name + ' was tagged but ' + ((rippleEvent.open)?'has not participated yet!':'did not participate!') + '</h2>';
       }
 
       dest.innerHTML = "";
