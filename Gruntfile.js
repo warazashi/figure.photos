@@ -346,6 +346,7 @@ module.exports = function (grunt) {
             'data/{,*/}*',
             'challenges/**',
             'event/**',
+            'events/**',
             'profile/**'
           ]
         }, {
