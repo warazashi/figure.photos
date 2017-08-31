@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="A monthly ripple event for the Figure Photgraphy Community." />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Figure Photography Community Monthly Ripple Event" />
+    <meta property="og:title" content="Figure Photography Community Monthly Ripple Event" />
+    <meta property="og:url" content="http://figure.photos/event/2017-09" />
+    <meta property="og:description" content="A monthly ripple event for the Figure Photgraphy Community." />
+
+    <meta property="og:image" content="https://lh3.googleusercontent.com/-ft2uh7ba_RE/WYK5OjT2ReI/AAAAAAAAmiI/ng5Lr8wFooASOz_eUN2TgP10Uxu-IOIKgCJoC/s0/DSC_7030.JPG" />
+
+    <title>Figure Photo Ripple Event - September 2017</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" type="text/css"/>
+    <style type="text/css">
+      html,body {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      .event {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+      }
+
+      #ripple
+      {
+        flex: 1;
+      }
+
+      #showcase
+      {
+        flex: 1;
+      }
+
+      .embeddedpost
+      {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+
+      .embeddedpost .photo
+      {
+        width: 100%;
+        border-radius: 3px;
+      }
+    </style>
+</head>
+<body>
+
+<div class="event">
+  <div id="ripple"></div>
+  <div id="showcase">
+    <h2>September Ripple Showcase</h2>
+    Click on a circle to see more information.
+  </div>
+</div>
+<script type="text/javascript">
+  var rippleEvent = {
+    open: true
+  }
+
+  var entries = [{
+    id: 0,
+    participant: {
+      name: 'Start!',
+    },
+    url: '',
+    icon: '',
+    photo: '',
+    next: []
+  },{
+ /*
+    id: 1,
+    participant: {
+      name: '+wara zashi',
+      url: 'https://plus.google.com/+warazashi'
+    },
+    url: null,
+    icon: null,
+    photo: null,
+    next: []
+*/
+/*
+  },{
+    id: ,
+    participant: {
+      name: '',
+      url: null
+    },
+    url: null,
+    icon: '',
+    photo: '',
+    next: []
+  },{
+    id: ,
+    participant: {
+      name: '',
+      url: null
+    }
+  }
+*/
+  }];
+
+
+    // create an array with nodes
+    var nodes = new vis.DataSet();
+    var edges = new vis.DataSet();
+
+    for(var i=0; i<entries.length; i++){
+      var entry = entries[i];
+      var node = {}
+      node.entryLocator = i;
+      node.id = entry.id;
+      node.label = entry.participant.name;
+      if(entry.icon) node.image = entry.icon;
+
+      if(i==0){
+        node.shape = 'circle';
+        node.font = {
+          size: 40,
+          bold: true
+        };
+      }
+
+      nodes.add(node);
+
+      if(entry.url != null && entry.next && entry.next.length > 0){
+        for(var j=0; j<entry.next.length; j++){
+          var target = entry.next[j];
+          edges.add({
+            from: entry.id,
+            to: target,
+            arrows : {
+              to: true
+            }
+          });
+        }
+      }
+    }
+
+    // create a network
+    var container = document.getElementById('ripple');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    var options = {
+      physics: true,
+      nodes: {
+        shape: 'circularImage',
+        image: 'https://lh3.googleusercontent.com/-CX6qNiR3a6Q/WNJ9mRusuXI/AAAAAAAAk2Y/UTfexfm88tEbMhEWOeGopK5TXBO0nmNrQCJoC/w530-h265-p-rw/figurefriday.png'
+      },
+      layout: {
+        randomSeed: 6
+//        hierarchical: {
+//          enabled: true,
+//          sortMethod: 'directed'
+//        }
+      }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+    network.on('click', function(properties) {
+      var nodeIndex = nodes.get(properties.nodes[0]).entryLocator;
+      if(nodeIndex == 0) return;
+      showEntry(entries[nodeIndex]);
+    });
+
+    function showEntry(entry)
+    {
+      var div, dest;
+      dest = document.getElementById("showcase");
+      div = document.createElement("div");
+
+      div.className = "embeddedpost";
+      var name = entry.participant.name;
+      if(entry.url != null){
+        if(entry.participant.url != null){
+          name = '<a href="' + entry.participant.url + '">' + entry.participant.name + '</a>'
+        }
+        div.innerHTML =
+        '<h2>Ripple by ' + name + ': <a href="' + entry.url + '">See Post</a></h2>' +
+        '<img class="photo" src="' + entry.photo + '" />';
+      } else {
+        if(entry.participant.url != null){
+          name = '<a href="' + entry.participant.url + '">' + entry.participant.name + '</a>'
+        }
+        div.innerHTML = '<h2>' + name + ' was tagged but ' + ((rippleEvent.open)?'has not participated yet!':'did not participate!') + '</h2>';
+      }
+
+      dest.innerHTML = "";
+      dest.appendChild(div);
+    };
+
+</script>
+</body>
+</html>
