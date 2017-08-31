@@ -74,14 +74,14 @@
   var entries = [{
     id: 0,
     participant: {
-      name: 'Start!',
+      name: 'Start!'
     },
-    url: '',
+    url: null,
     icon: '',
     photo: '',
     next: []
-  },{
  /*
+  },{
     id: 1,
     participant: {
       name: '+wara zashi',
@@ -184,6 +184,8 @@
 
     function showEntry(entry)
     {
+      if(!entry) return;
+
       var div, dest;
       dest = document.getElementById("showcase");
       div = document.createElement("div");

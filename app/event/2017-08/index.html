@@ -622,6 +622,8 @@
 
     function showEntry(entry)
     {
+      if(!entry) return;
+
       var div, dest;
       dest = document.getElementById("showcase");
       div = document.createElement("div");
